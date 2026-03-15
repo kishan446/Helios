@@ -200,6 +200,10 @@ async def root():
 
 @api_router.post("/generate-game")
 async def generate_game(request: GenerateGameRequest):
+    if not request.prompt or not request.prompt.strip():
+        raise HTTPException(status_code=400, detail="Game prompt cannot be empty. Please describe your game idea.")
+    if len(request.prompt.strip()) < 10:
+        raise HTTPException(status_code=400, detail="Please provide a more detailed game description (at least 10 characters).")
     try:
         chat = LlmChat(
             api_key=os.environ['EMERGENT_LLM_KEY'],

@@ -789,6 +789,7 @@
   margin: 20px auto 0;
   position: relative;
   border-radius: 18px;
+  z-index: 1;
 }
 
 .forge-btn-wrapper::before {
@@ -799,6 +800,7 @@
   background: conic-gradient(from var(--rotate, 0deg), #FFD60A, #FF6B2B, #FF2D6B, #8B5CF6, #00F5FF, #FFD60A);
   z-index: -1;
   animation: forgeRotate 3s linear infinite;
+  opacity: 0.85;
 }
 
 .forge-btn {
