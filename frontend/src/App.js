@@ -1,24 +1,74 @@
 import React, { useState, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
 import './App.css';
 import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
 import ParticleBackground from './components/ParticleBackground';
 import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
-import PromptForge from './components/PromptForge';
-import AgentPipeline from './components/AgentPipeline';
-import GameOutput from './components/GameOutput';
-import GameGallery from './components/GameGallery';
-import HowItWorks from './components/HowItWorks';
-import TeacherDashboard from './components/TeacherDashboard';
 import Footer from './components/Footer';
 import ToastSystem from './components/ToastSystem';
+import HomePage from './pages/HomePage';
+import ForgePage from './pages/ForgePage';
+import GalleryPage from './pages/GalleryPage';
+import TeacherPage from './pages/TeacherPage';
+import PricingPage from './pages/PricingPage';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-function App() {
+const pageVariants = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.23, 1, 0.32, 1] } },
+  exit: { opacity: 0, y: -12, transition: { duration: 0.2 } },
+};
+
+function AnimatedRoutes({ onForge, isGenerating, genProgress, genStage, generatedGame, gameTitle, gameSettings, addToast }) {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={
+          <motion.div {...pageVariants}>
+            <HomePage onForgeClick={() => window.location.href = '/forge'} />
+          </motion.div>
+        } />
+        <Route path="/forge" element={
+          <motion.div {...pageVariants}>
+            <ForgePage
+              onForge={onForge}
+              isGenerating={isGenerating}
+              genProgress={genProgress}
+              genStage={genStage}
+              generatedGame={generatedGame}
+              gameTitle={gameTitle}
+              gameSettings={gameSettings}
+              addToast={addToast}
+            />
+          </motion.div>
+        } />
+        <Route path="/gallery" element={
+          <motion.div {...pageVariants}>
+            <GalleryPage />
+          </motion.div>
+        } />
+        <Route path="/teacher" element={
+          <motion.div {...pageVariants}>
+            <TeacherPage />
+          </motion.div>
+        } />
+        <Route path="/pricing" element={
+          <motion.div {...pageVariants}>
+            <PricingPage />
+          </motion.div>
+        } />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
+function AppContent() {
   const [loaderDone, setLoaderDone] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [genProgress, setGenProgress] = useState(0);
@@ -27,7 +77,6 @@ function App() {
   const [gameTitle, setGameTitle] = useState('');
   const [gameSettings, setGameSettings] = useState({});
   const [toasts, setToasts] = useState([]);
-  const [showTeacherDash, setShowTeacherDash] = useState(false);
 
   const addToast = useCallback((message, type = 'info') => {
     const id = Date.now() + Math.random();
@@ -44,11 +93,7 @@ function App() {
     setGenProgress(0);
     setGenStage(0);
     setGeneratedGame(null);
-    setGameSettings(settings);
-
-    setTimeout(() => {
-      document.getElementById('agent-pipeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 200);
+    setGameSettings(settings || {});
 
     let progress = 0;
     const interval = setInterval(() => {
@@ -71,100 +116,47 @@ function App() {
         setGeneratedGame(response.data.html);
         setGameTitle(response.data.title);
         setIsGenerating(false);
-        setTimeout(() => {
-          document.getElementById('game-output-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
-        addToast('Your game is forged! Enjoy playing! 🎮', 'success');
-      }, 1500);
+        addToast('Game forged! Enjoy playing! 🎮', 'success');
+      }, 1200);
 
     } catch (err) {
       clearInterval(interval);
       setIsGenerating(false);
-      const msg = err.response?.data?.detail || 'Game generation failed. Please try again.';
-      addToast(msg, 'error');
       setGenProgress(0);
+      addToast(err.response?.data?.detail || 'Generation failed. Try again.', 'error');
     }
   }, [addToast]);
-
-  const handleRegenerate = useCallback((prompt, settings) => {
-    handleForge(prompt, settings || gameSettings);
-  }, [handleForge, gameSettings]);
-
-  const scrollToForge = useCallback(() => {
-    document.getElementById('forge-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, []);
 
   return (
     <div className="app-root">
       {!loaderDone && <Loader onComplete={() => setLoaderDone(true)} />}
-      <div style={{ opacity: loaderDone ? 1 : 0, transition: 'opacity 0.6s ease' }}>
+      <div style={{ opacity: loaderDone ? 1 : 0, transition: 'opacity 0.5s ease' }}>
         <CustomCursor />
         <ParticleBackground />
-        <Navbar
-          onTeacherMode={() => setShowTeacherDash(v => !v)}
-          onForgeClick={scrollToForge}
-          showTeacherDash={showTeacherDash}
-        />
-        <main>
-          <section id="home">
-            <HeroSection onForgeClick={scrollToForge} />
-          </section>
-
-          <section id="forge-section">
-            <PromptForge onForge={handleForge} isGenerating={isGenerating} />
-          </section>
-
-          {(isGenerating || genProgress > 0) && (
-            <div id="agent-pipeline">
-              <AgentPipeline
-                progress={genProgress}
-                stage={genStage}
-                isGenerating={isGenerating}
-              />
-            </div>
-          )}
-
-          {generatedGame && (
-            <section id="game-output-section">
-              <GameOutput
-                html={generatedGame}
-                title={gameTitle}
-                settings={gameSettings}
-                addToast={addToast}
-                onRegenerate={handleRegenerate}
-              />
-            </section>
-          )}
-
-          <section id="gallery">
-            <GameGallery onPlayGame={(prompt) => {
-              scrollToForge();
-              setTimeout(() => {
-                window.dispatchEvent(new CustomEvent('fill-forge', { detail: { prompt } }));
-              }, 400);
-            }} />
-          </section>
-
-          <section id="how-it-works">
-            <HowItWorks onForgeClick={scrollToForge} />
-          </section>
-
-          {showTeacherDash && (
-            <section id="teacher-dashboard">
-              <TeacherDashboard />
-            </section>
-          )}
+        <Navbar />
+        <main className="page-main">
+          <AnimatedRoutes
+            onForge={handleForge}
+            isGenerating={isGenerating}
+            genProgress={genProgress}
+            genStage={genStage}
+            generatedGame={generatedGame}
+            gameTitle={gameTitle}
+            gameSettings={gameSettings}
+            addToast={addToast}
+          />
         </main>
-
-        <Footer
-          onTeacherMode={() => setShowTeacherDash(v => !v)}
-          showTeacherDash={showTeacherDash}
-          onForgeClick={scrollToForge}
-        />
+        <Footer />
         <ToastSystem toasts={toasts} removeToast={removeToast} />
       </div>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}

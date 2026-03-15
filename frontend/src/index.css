@@ -5,102 +5,79 @@
 @tailwind utilities;
 
 :root {
-  --bg-void: #020204;
-  --bg-deep: #06060C;
-  --bg-dark: #0A0A14;
-  --bg-surface: #0F0F1E;
-  --bg-elevated: #141428;
-  --bg-glass: rgba(255,255,255,0.03);
-  --bg-glass-hover: rgba(255,255,255,0.06);
-  --neon-yellow: #FFD60A;
-  --neon-cyan: #00F5FF;
-  --neon-pink: #FF2D6B;
-  --neon-green: #00FF87;
-  --neon-purple: #8B5CF6;
-  --neon-orange: #FF6B2B;
-  --glow-yellow: 0 0 20px rgba(255,214,10,0.4), 0 0 60px rgba(255,214,10,0.15);
-  --glow-cyan: 0 0 20px rgba(0,245,255,0.4), 0 0 60px rgba(0,245,255,0.15);
-  --glow-pink: 0 0 20px rgba(255,45,107,0.4), 0 0 60px rgba(255,45,107,0.15);
-  --text-primary: #FFFFFF;
-  --text-secondary: #C0C0E0;
-  --text-muted: #505070;
-  --text-ghost: #2A2A40;
-  --border-subtle: rgba(255,255,255,0.06);
-  --border-glow: rgba(255,214,10,0.3);
-  --border-active: rgba(0,245,255,0.5);
+  /* Core blacks */
+  --bg-void:    #000000;
+  --bg-deep:    #050505;
+  --bg-dark:    #0A0A0A;
+  --bg-surface: #0E0E0E;
+  --bg-elevated:#141414;
+  --bg-card:    #111111;
+  --bg-glass:   rgba(255,255,255,0.025);
+
+  /* ONE accent */
+  --accent:      #FFD60A;
+  --accent-dim:  rgba(255,214,10,0.12);
+  --accent-glow: 0 0 24px rgba(255,214,10,0.25), 0 0 60px rgba(255,214,10,0.08);
+
+  /* Whites */
+  --text-primary:   #FFFFFF;
+  --text-secondary: #888888;
+  --text-muted:     #444444;
+  --text-ghost:     #1E1E1E;
+
+  /* Borders */
+  --border-subtle: rgba(255,255,255,0.05);
+  --border-medium: rgba(255,255,255,0.10);
+  --border-strong: rgba(255,255,255,0.18);
+  --border-accent: rgba(255,214,10,0.30);
+
+  /* Transitions */
   --ease-spring: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-  --background: 230 100% 1%;
+
+  /* Shadcn compat */
+  --background: 0 0% 0%;
   --foreground: 0 0% 100%;
-  --card: 230 50% 5%;
+  --card: 0 0% 5%;
   --card-foreground: 0 0% 100%;
-  --popover: 230 50% 5%;
+  --popover: 0 0% 5%;
   --popover-foreground: 0 0% 100%;
   --primary: 51 100% 52%;
   --primary-foreground: 0 0% 0%;
-  --secondary: 230 30% 12%;
+  --secondary: 0 0% 8%;
   --secondary-foreground: 0 0% 100%;
-  --muted: 230 30% 10%;
-  --muted-foreground: 230 20% 50%;
-  --accent: 230 30% 12%;
-  --accent-foreground: 0 0% 100%;
-  --destructive: 340 100% 60%;
+  --muted: 0 0% 8%;
+  --muted-foreground: 0 0% 50%;
+  --accent: 51 100% 52%;
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --border: 230 30% 12%;
-  --input: 230 30% 12%;
+  --border: 0 0% 10%;
+  --input: 0 0% 10%;
   --ring: 51 100% 52%;
   --radius: 0.5rem;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: var(--bg-void);
-  color: var(--text-primary);
+  background-color: #000000;
+  color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   cursor: none;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-deep);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 214, 10, 0.3);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 214, 10, 0.6);
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,214,10,0.4); }
 
 @layer base {
   * { @apply border-border; }
   body { @apply bg-background text-foreground; }
-}
-
-@layer base {
-  [data-debug-wrapper="true"] { display: contents !important; }
-  [data-debug-wrapper="true"] > * {
-    margin-left: inherit; margin-right: inherit;
-    margin-top: inherit; margin-bottom: inherit;
-    padding-left: inherit; padding-right: inherit;
-    padding-top: inherit; padding-bottom: inherit;
-    gap: inherit; border-left-width: inherit;
-    border-right-width: inherit; border-top-width: inherit;
-    border-bottom-width: inherit;
-  }
 }

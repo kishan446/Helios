@@ -1,68 +1,53 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-const NAV_ITEMS = [
-  { label: 'Home', href: '#home' },
-  { label: 'Forge', href: '#forge-section' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Teacher Mode', href: '#teacher-dashboard', isTeacher: true },
+const NAV_LINKS = [
+  { label: 'Home', to: '/' },
+  { label: 'Forge', to: '/forge' },
+  { label: 'Gallery', to: '/gallery' },
+  { label: 'Teacher', to: '/teacher' },
+  { label: 'Pricing', to: '/pricing' },
 ];
 
-export default function Navbar({ onTeacherMode, onForgeClick, showTeacherDash }) {
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [active, setActive] = useState('home');
+  const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (item, e) => {
-    e.preventDefault();
-    setMobileOpen(false);
-    if (item.isTeacher) {
-      onTeacherMode();
-      setTimeout(() => {
-        document.getElementById('teacher-dashboard')?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } else {
-      const target = document.querySelector(item.href);
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
-    }
-    setActive(item.href.replace('#', ''));
-  };
+  useEffect(() => setMobileOpen(false), [location.pathname]);
+
+  const isActive = (to) => to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
 
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} data-testid="navbar">
-        <a className="nav-logo" href="#home" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+        <Link to="/" className="nav-logo" data-testid="nav-logo">
           <div className="nav-logo-hex">H</div>
-          <span className="nav-logo-text">HELIOS<span className="nav-logo-ultra">AI</span></span>
-        </a>
+          <span className="nav-logo-text">HELIOS<span className="nav-logo-sup">AI</span></span>
+        </Link>
 
         <div className="nav-links">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`nav-link ${(item.isTeacher && showTeacherDash) ? 'active' : ''}`}
-              onClick={(e) => handleNavClick(item, e)}
-              data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+          {NAV_LINKS.map(link => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={`nav-link ${isActive(link.to) ? 'active' : ''}`}
+              data-testid={`nav-${link.label.toLowerCase()}`}
             >
-              {item.label}
-            </a>
+              {link.label}
+            </Link>
           ))}
         </div>
 
-        <button
-          className="nav-cta magnetic"
-          onClick={onForgeClick}
-          data-testid="nav-forge-btn"
-        >
+        <Link to="/forge" className="nav-cta" data-testid="nav-cta">
           FORGE NOW →
-        </button>
+        </Link>
 
         <button
           className={`mobile-menu-btn ${mobileOpen ? 'open' : ''}`}
@@ -75,36 +60,28 @@ export default function Navbar({ onTeacherMode, onForgeClick, showTeacherDash })
       </nav>
 
       <div className={`mobile-menu ${mobileOpen ? 'open' : ''}`} data-testid="mobile-menu">
-        {NAV_ITEMS.map((item, i) => (
-          <a
-            key={item.label}
-            href={item.href}
-            className="nav-link"
+        {NAV_LINKS.map((link, i) => (
+          <Link
+            key={link.to}
+            to={link.to}
+            className={`nav-link ${isActive(link.to) ? 'active' : ''}`}
             style={{
-              fontSize: 18,
-              opacity: 0,
-              animation: mobileOpen ? `fadeSlideIn 0.4s ${i * 0.06}s forwards` : 'none',
+              fontSize: 18, padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.05)',
+              opacity: mobileOpen ? 0 : 0,
+              animation: mobileOpen ? `fadeUp 0.4s ${i * 0.06}s forwards` : 'none',
             }}
-            onClick={(e) => handleNavClick(item, e)}
           >
-            {item.label}
-          </a>
+            {link.label}
+          </Link>
         ))}
-        <button
+        <Link
+          to="/forge"
           className="btn-primary"
-          style={{ fontSize: 12, padding: '14px 28px', marginTop: 16 }}
-          onClick={() => { setMobileOpen(false); onForgeClick(); }}
+          style={{ marginTop: 24, textAlign: 'center', textDecoration: 'none', justifyContent: 'center' }}
         >
           ⚡ FORGE NOW
-        </button>
+        </Link>
       </div>
-
-      <style>{`
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateX(20px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-      `}</style>
     </>
   );
 }
