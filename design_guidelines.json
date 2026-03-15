@@ -1,0 +1,175 @@
+{
+  "identity": {
+    "name": "HELIOS",
+    "tagline": "Forge Worlds in 60 Seconds",
+    "description": "AI-powered HTML5 game creation engine for the next generation of creators.",
+    "theme": "dark",
+    "aesthetic": "Cyberpunk / Neon / Void",
+    "target_audience": "K-12 Students, Teachers, Gamers"
+  },
+  "typography": {
+    "font_families": {
+      "headings": "Orbitron, sans-serif",
+      "ui": "Space Grotesk, sans-serif",
+      "body": "Inter, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-6xl md:text-8xl font-black tracking-tighter uppercase",
+      "h2": "text-4xl md:text-5xl font-bold tracking-tight uppercase",
+      "h3": "text-2xl md:text-3xl font-bold uppercase",
+      "body": "text-base md:text-lg leading-relaxed text-gray-300",
+      "label": "text-sm font-bold tracking-widest uppercase text-neon-cyan"
+    },
+    "imports": [
+      "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;600;700&display=swap');"
+    ]
+  },
+  "colors": {
+    "palette": {
+      "background": "#020204",
+      "foreground": "#FFFFFF",
+      "primary": "#00F5FF",
+      "secondary": "#FFD60A",
+      "accent": "#FF2D6B",
+      "success": "#00FF87",
+      "muted": "#12121A",
+      "card": "rgba(18, 18, 26, 0.6)",
+      "border": "rgba(255, 255, 255, 0.1)"
+    },
+    "gradients": {
+      "primary": "linear-gradient(135deg, #00F5FF 0%, #00CCFF 100%)",
+      "secondary": "linear-gradient(135deg, #FFD60A 0%, #FFA500 100%)",
+      "accent": "linear-gradient(135deg, #FF2D6B 0%, #FF0055 100%)",
+      "glass": "linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.0) 100%)"
+    },
+    "tailwind_config": {
+      "colors": {
+        "neon-cyan": "#00F5FF",
+        "neon-yellow": "#FFD60A",
+        "neon-pink": "#FF2D6B",
+        "neon-green": "#00FF87",
+        "void": "#020204",
+        "glass-border": "rgba(255, 255, 255, 0.1)"
+      },
+      "boxShadow": {
+        "neon-cyan": "0 0 20px rgba(0, 245, 255, 0.5)",
+        "neon-pink": "0 0 20px rgba(255, 45, 107, 0.5)"
+      }
+    }
+  },
+  "layout_strategy": {
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "spacing": "Generous. Use p-8 to p-24 for section padding.",
+    "grid": "Bento Grid approach for galleries. Asymmetrical layouts for marketing sections.",
+    "z_index": {
+      "particles": -1,
+      "content": 10,
+      "overlay": 50,
+      "modal": 100
+    }
+  },
+  "components": {
+    "Hero": {
+      "description": "Full-screen immersive experience. Glitch title centered. 3D particle background.",
+      "elements": [
+        "GlitchText: 'HELIOS'",
+        "Subtext: 'Forge Your World'",
+        "CTA: 'Start Forging' (Magnetic Button)",
+        "Background: TsParticles with 'cyber-grid' config"
+      ]
+    },
+    "PromptForge": {
+      "description": "The core input mechanism. A glassmorphic terminal window.",
+      "style": "Glassmorphism (Crystal). Border-white/10. Backdrop-blur-xl.",
+      "elements": [
+        "Textarea: Transparent bg, neon-cyan caret, Orbitron font.",
+        "Settings: Dropdowns for Genre, Difficulty, Art Style.",
+        "ForgeButton: Massive, pulsing neon-yellow button."
+      ]
+    },
+    "AgentPipeline": {
+      "description": "Visualizes the AI generation process.",
+      "layout": "Horizontal flow. Connected nodes.",
+      "agents": [
+        { "name": "Architect", "role": "Game Logic", "color": "neon-cyan" },
+        { "name": "Artist", "role": "Assets & Visuals", "color": "neon-pink" },
+        { "name": "Coder", "role": "Physics & Engine", "color": "neon-yellow" },
+        { "name": "QA", "role": "Testing & Polish", "color": "neon-green" }
+      ],
+      "animation": "Tracing beam effect between nodes."
+    },
+    "GameGallery": {
+      "description": "Showcase of created games.",
+      "style": "3D Tilt Cards. Hover lifts card + glow.",
+      "image_style": "Pixel art or Cyberpunk abstract."
+    },
+    "TeacherDashboard": {
+      "description": "Command center for educators.",
+      "style": "High-density grid. Data-heavy but legible.",
+      "charts": "Recharts with neon strokes (no fill, just lines)."
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl",
+    "neon_glow": "drop-shadow-[0_0_10px_rgba(0,245,255,0.7)]",
+    "glitch_effect": "CSS keyframes for clip-path distortion.",
+    "magnetic_button": "Framer Motion useTransform on mouse move."
+  },
+  "motion": {
+    "library": "framer-motion",
+    "default_transition": {
+      "type": "spring",
+      "stiffness": 300,
+      "damping": 30
+    },
+    "page_transition": {
+      "initial": { "opacity": 0, "y": 20 },
+      "animate": { "opacity": 1, "y": 0 },
+      "exit": { "opacity": 0, "y": -20 }
+    }
+  },
+  "assets": {
+    "images": [
+      {
+        "category": "hero_bg",
+        "url": "https://images.unsplash.com/photo-1745840389449-16cb9ec68f33?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwxfHxmdXR1cmlzdGljJTIwYWklMjByb2JvdCUyMGZhY2UlMjBhdmF0YXIlMjBuZW9ufGVufDB8fHx8MTc3MzU5MTg4OXww&ixlib=rb-4.1.0&q=85",
+        "alt": "AI Core"
+      },
+      {
+        "category": "game_thumb_1",
+        "url": "https://images.unsplash.com/photo-1772786077434-b634c0d76a97?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwzfHxwaXhlbCUyMGFydCUyMGN5YmVycHVuayUyMGdhbWUlMjBzY3JlZW5zaG90fGVufDB8fHx8MTc3MzU5MTg4OHww&ixlib=rb-4.1.0&q=85",
+        "alt": "Pixel Creature Game"
+      },
+      {
+        "category": "game_thumb_2",
+        "url": "https://images.unsplash.com/photo-1647700188234-ae5d6c24060c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwyfHxwaXhlbCUyMGFydCUyMGN5YmVycHVuayUyMGdhbWUlMjBzY3JlZW5zaG90fGVufDB8fHx8MTc3MzU5MTg4OHww&ixlib=rb-4.1.0&q=85",
+        "alt": "Block World Game"
+      },
+      {
+        "category": "teacher_avatar",
+        "url": "https://images.unsplash.com/photo-1584805207967-3bdf1fa0c000?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwxfHxjeWJlcnB1bmslMjB0ZWFjaGVyJTIwYXZhdGFyfGVufDB8fHx8MTc3MzU5MTg5MHww&ixlib=rb-4.1.0&q=85",
+        "alt": "Teacher Avatar"
+      }
+    ],
+    "icons": "lucide-react"
+  },
+  "universal_guidelines": {
+    "rules": [
+      "Do NOT use gradients for text unless it is a very large heading.",
+      "Do NOT use 'Inter' for Headings. Use 'Orbitron'.",
+      "ALWAYS use 'Space Grotesk' for buttons and inputs.",
+      "Ensure all interactive elements have hover states (glow or lift).",
+      "Use 'backdrop-blur-md' or 'backdrop-blur-xl' for all overlay panels.",
+      "Add 'data-testid' to all interactive elements."
+    ]
+  },
+  "instructions_to_main_agent": {
+    "step_1": "Update tailwind.config.js with the new color palette and font families.",
+    "step_2": "Update index.css with the CSS variables for the dark theme.",
+    "step_3": "Install 'framer-motion', 'lucide-react', 'react-tsparticles', 'tsparticles', 'clsx', 'tailwind-merge'.",
+    "step_4": "Create the 'ParticleBackground' component using tsparticles.",
+    "step_5": "Create the 'GlitchText' component.",
+    "step_6": "Build the 'Hero', 'PromptForge', and 'GameGallery' sections following the design specs."
+  }
+}
