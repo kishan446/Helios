@@ -182,7 +182,7 @@ export default function HomePage() {
           <span className="section-eyebrow">SIMPLE PRICING</span>
           <h2 className="section-title">Start Free. Scale As You Grow.</h2>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, maxWidth: 900px, margin: '0 auto', padding: '0 24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, maxWidth: '900px', margin: '0 auto', padding: '0 24px' }}>
           {[
             { name: 'FREE', price: '0', per: '/forever', desc: 'Perfect for personal use and exploration', features: ['3 games per month', 'All game types', 'Download HTML', 'Play in browser'], btn: 'Get Started Free' },
             { name: 'TEACHER', price: '9', per: '/month', desc: 'For educators building curriculum-aligned games', features: ['50 games per month', 'Teacher dashboard', 'Student analytics', 'Class management', 'Priority generation'], featured: true, btn: 'Start Teaching' },

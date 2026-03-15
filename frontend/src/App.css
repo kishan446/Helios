@@ -352,6 +352,7 @@
 .theme-chip.selected { border-color: rgba(255,214,10,0.4); color: #FFD60A; background: rgba(255,214,10,0.06); }
 
 .forge-btn-outer { max-width: 860px; margin: 16px auto 0; }
+.forge-btn-wrapper { max-width: 860px; margin: 16px auto 0; }
 .forge-btn {
   width: 100%; height: 72px; border-radius: 14px; background: #FFD60A;
   border: none; cursor: none; font-family: 'Orbitron',sans-serif; font-size: 16px; font-weight: 900;
@@ -410,6 +411,7 @@
 .game-badge { font-family: 'Space Grotesk',sans-serif; font-size: 11px; padding: 3px 12px; border-radius: 100px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
 .game-frame-outer { position: relative; border-radius: 20px; aspect-ratio: 16/9; }
 .game-glow { position: absolute; inset: -1px; border-radius: 21px; border: 1px solid rgba(255,214,10,0.2); box-shadow: 0 0 40px rgba(255,214,10,0.06); pointer-events: none; z-index: 2; }
+.game-frame-glow { position: absolute; inset: -1px; border-radius: 21px; border: 1px solid rgba(255,214,10,0.2); box-shadow: 0 0 40px rgba(255,214,10,0.06); pointer-events: none; z-index: 2; }
 .game-frame-inner { border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 80px rgba(0,0,0,0.8); width: 100%; height: 100%; }
 .game-frame-inner iframe { width: 100%; height: 100%; border: none; display: block; }
 .frame-corner { position: absolute; width: 18px; height: 18px; border-color: rgba(255,214,10,0.4); border-style: solid; z-index: 3; }
@@ -525,8 +527,27 @@
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 @keyframes spinSlow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes spin-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 @keyframes toastIn { from{transform:translateX(110%);opacity:0} to{transform:translateX(0);opacity:1} }
 @keyframes toastOut { from{transform:translateX(0);opacity:1} to{transform:translateX(110%);opacity:0} }
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 @keyframes borderGlow { 0%,100%{border-color:rgba(255,214,10,0.15)} 50%{border-color:rgba(255,214,10,0.35)} }
+
+/* ===== FORGE NUMBERED STEPS ===== */
+.forge-step-header { max-width: 860px; margin: 48px auto 16px; padding: 0 24px; display: flex; align-items: center; gap: 12px; }
+.forge-step-num { width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron',sans-serif; font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.25); flex-shrink: 0; transition: all 0.3s; }
+.forge-step-num.active { background: rgba(255,214,10,0.08); border-color: rgba(255,214,10,0.3); color: #FFD60A; }
+.forge-step-title { font-family: 'Space Grotesk',sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 5px; color: rgba(255,255,255,0.2); text-transform: uppercase; transition: color 0.3s; }
+.forge-step-title.active { color: rgba(255,255,255,0.45); }
+
+/* ===== HISTORY PANEL ===== */
+.history-panel { max-width: 860px; margin: 24px auto 0; padding: 0 24px; }
+.history-title { font-family: 'Space Grotesk',sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 4px; color: rgba(255,255,255,0.18); text-transform: uppercase; margin-bottom: 12px; }
+.history-list { display: flex; flex-direction: column; gap: 6px; }
+.history-item { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: transparent; border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; cursor: none; transition: all 0.2s; text-align: left; }
+.history-item:hover { border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); }
+.history-item-time { font-family: 'Space Grotesk',sans-serif; font-size: 10px; color: rgba(255,214,10,0.55); flex-shrink: 0; min-width: 48px; }
+.history-item-title { font-family: 'Space Grotesk',sans-serif; font-size: 13px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+.history-item-restore { font-family: 'Space Grotesk',sans-serif; font-size: 10px; color: rgba(255,255,255,0.18); flex-shrink: 0; margin-left: auto; transition: color 0.2s; }
+.history-item:hover .history-item-restore { color: rgba(255,255,255,0.4); }

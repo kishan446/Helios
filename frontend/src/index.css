@@ -19,6 +19,13 @@
   --accent-dim:  rgba(255,214,10,0.12);
   --accent-glow: 0 0 24px rgba(255,214,10,0.25), 0 0 60px rgba(255,214,10,0.08);
 
+  /* Neon aliases — remapped to monochrome palette */
+  --neon-yellow: #FFD60A;
+  --neon-cyan:   rgba(255,255,255,0.85);
+  --neon-green:  rgba(255,255,255,0.65);
+  --neon-pink:   rgba(255,255,255,0.4);
+  --neon-purple: rgba(255,255,255,0.5);
+
   /* Whites */
   --text-primary:   #FFFFFF;
   --text-secondary: #888888;

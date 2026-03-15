@@ -43,7 +43,7 @@ function GameCard3D({ game }) {
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 50% 50%, ${game.accent}10, transparent 70%)` }} />
         <div className="thumb-overlay" />
         <div className="play-overlay">
-          <Link to="/forge" onClick={() => { window.dispatchEvent(new CustomEvent('fill-forge', { detail: { prompt: game.prompt } })); }} style={{ textDecoration: 'none' }}>
+          <Link to={`/forge?prompt=${encodeURIComponent(game.prompt)}`} style={{ textDecoration: 'none' }}>
             <div className="play-btn-circle">▶</div>
           </Link>
           <span className="play-label">FORGE SIMILAR</span>

@@ -24,14 +24,14 @@ const pageVariants = {
   exit: { opacity: 0, y: -12, transition: { duration: 0.2 } },
 };
 
-function AnimatedRoutes({ onForge, isGenerating, genProgress, genStage, generatedGame, gameTitle, gameSettings, addToast }) {
+function AnimatedRoutes({ onForge, isGenerating, genProgress, genStage, generatedGame, gameTitle, gameSettings, addToast, gameHistory, onSaveToGallery, currentPrompt }) {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
           <motion.div {...pageVariants}>
-            <HomePage onForgeClick={() => window.location.href = '/forge'} />
+            <HomePage />
           </motion.div>
         } />
         <Route path="/forge" element={
@@ -45,6 +45,9 @@ function AnimatedRoutes({ onForge, isGenerating, genProgress, genStage, generate
               gameTitle={gameTitle}
               gameSettings={gameSettings}
               addToast={addToast}
+              gameHistory={gameHistory}
+              onSaveToGallery={onSaveToGallery}
+              currentPrompt={currentPrompt}
             />
           </motion.div>
         } />
@@ -76,7 +79,11 @@ function AppContent() {
   const [generatedGame, setGeneratedGame] = useState(null);
   const [gameTitle, setGameTitle] = useState('');
   const [gameSettings, setGameSettings] = useState({});
+  const [currentPrompt, setCurrentPrompt] = useState('');
   const [toasts, setToasts] = useState([]);
+  const [gameHistory, setGameHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('helios_history') || '[]'); } catch { return []; }
+  });
 
   const addToast = useCallback((message, type = 'info') => {
     const id = Date.now() + Math.random();
@@ -88,12 +95,29 @@ function AppContent() {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
 
+  const handleSaveToGallery = useCallback(async (html, title, prompt, settings) => {
+    try {
+      const res = await axios.post(`${API}/gallery`, {
+        title,
+        html,
+        prompt: prompt || '',
+        subject: (settings?.subject || 'General').replace(/[^\w\s]/g, '').trim() || 'General',
+      });
+      addToast('Game saved to Gallery!', 'success');
+      return res.data.id;
+    } catch {
+      addToast('Failed to save to gallery.', 'error');
+      return null;
+    }
+  }, [addToast]);
+
   const handleForge = useCallback(async (prompt, settings) => {
     setIsGenerating(true);
     setGenProgress(0);
     setGenStage(0);
     setGeneratedGame(null);
     setGameSettings(settings || {});
+    setCurrentPrompt(prompt);
 
     let progress = 0;
     const interval = setInterval(() => {
@@ -113,10 +137,18 @@ function AppContent() {
       setGenStage(4);
 
       setTimeout(() => {
+        const title = response.data.title;
         setGeneratedGame(response.data.html);
-        setGameTitle(response.data.title);
+        setGameTitle(title);
         setIsGenerating(false);
-        addToast('Game forged! Enjoy playing! 🎮', 'success');
+        addToast('Game forged! Enjoy playing!', 'success');
+
+        const entry = { title, prompt, timestamp: Date.now() };
+        setGameHistory(prev => {
+          const updated = [entry, ...prev.filter(h => h.prompt !== prompt)].slice(0, 5);
+          localStorage.setItem('helios_history', JSON.stringify(updated));
+          return updated;
+        });
       }, 1200);
 
     } catch (err) {
@@ -144,6 +176,9 @@ function AppContent() {
             gameTitle={gameTitle}
             gameSettings={gameSettings}
             addToast={addToast}
+            gameHistory={gameHistory}
+            onSaveToGallery={handleSaveToGallery}
+            currentPrompt={currentPrompt}
           />
         </main>
         <Footer />

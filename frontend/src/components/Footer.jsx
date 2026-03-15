@@ -1,29 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Twitter, Github, Globe } from 'lucide-react';
 
 const FOOTER_LINKS = [
-  { label: 'Forge a Game', href: '#forge-section' },
-  { label: 'Game Gallery', href: '#gallery' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Teacher Mode', href: '#teacher-dashboard' },
-  { label: 'About HELIOS', href: '#' },
+  { label: 'Forge a Game', to: '/forge' },
+  { label: 'Game Gallery', to: '/gallery' },
+  { label: 'How It Works', to: '/' },
+  { label: 'Teacher Mode', to: '/teacher' },
+  { label: 'Pricing', to: '/pricing' },
 ];
 
-export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick }) {
-  const scrollTo = (href) => {
-    const target = document.querySelector(href);
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  };
-
+export default function Footer() {
   return (
     <footer className="footer" data-testid="footer">
       <div className="footer-grid">
         {/* Left: Logo + tagline */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, textDecoration: 'none', cursor: 'none' }}>
             <div style={{
               width: 40, height: 40,
-              background: 'linear-gradient(135deg, #FFD60A, #FF2D6B)',
+              background: '#FFD60A',
               clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontFamily: 'Orbitron', fontWeight: 900, fontSize: 18, color: 'black',
@@ -33,7 +29,7 @@ export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick })
             <span style={{ fontFamily: 'Orbitron', fontWeight: 700, fontSize: 18, letterSpacing: 4, color: 'white' }}>
               HELIOS
             </span>
-          </div>
+          </Link>
           <p style={{
             fontFamily: 'Inter', fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.7,
             marginBottom: 24, maxWidth: 280,
@@ -45,7 +41,7 @@ export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick })
             {[
               { icon: <Twitter size={16} />, href: 'https://twitter.com', label: 'Twitter' },
               { icon: <Github size={16} />, href: 'https://github.com', label: 'GitHub' },
-              { icon: <Globe size={16} />, href: 'https://helios.ai', label: 'Website' },
+              { icon: <Globe size={16} />, href: '#', label: 'Website' },
             ].map(social => (
               <a
                 key={social.label}
@@ -58,9 +54,8 @@ export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick })
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--text-muted)',
-                  transition: 'all 0.2s',
-                  textDecoration: 'none',
+                  color: 'var(--text-muted)', transition: 'all 0.2s',
+                  textDecoration: 'none', cursor: 'none',
                 }}
                 data-testid={`social-${social.label.toLowerCase()}`}
               >
@@ -80,44 +75,34 @@ export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick })
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {FOOTER_LINKS.map(link => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (link.href === '#teacher-dashboard') onTeacherMode();
-                  else scrollTo(link.href);
-                }}
-                style={{
-                  fontFamily: 'Space Grotesk', fontSize: 14, color: 'var(--text-muted)',
-                  textDecoration: 'none', transition: 'color 0.2s',
-                }}
+                to={link.to}
+                className="footer-link"
                 data-testid={`footer-link-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
 
-        {/* Right: Powered by + India badge */}
+        {/* Right: Powered by + India badge + Newsletter */}
         <div>
           <div style={{
             background: 'rgba(255,255,255,0.02)',
             border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: 16,
-            padding: 20,
-            marginBottom: 20,
+            borderRadius: 16, padding: 20, marginBottom: 20,
           }}>
             <div style={{ marginBottom: 12 }}>
               <span style={{ fontFamily: 'Orbitron', fontSize: 11, letterSpacing: 3, color: 'var(--text-muted)' }}>
                 POWERED BY
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{
                 width: 32, height: 32, borderRadius: 8,
-                background: 'linear-gradient(135deg, #7B2FBE, #9B4DCA)',
+                background: '#1A1A1A', border: '1px solid rgba(255,255,255,0.12)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'Orbitron', fontSize: 14, color: 'white', fontWeight: 700,
               }}>
@@ -136,13 +121,11 @@ export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick })
 
           <div style={{
             background: 'rgba(255,255,255,0.02)',
-            border: '1px solid rgba(255, 214, 10, 0.15)',
-            borderRadius: 16,
-            padding: 20,
-            marginBottom: 20,
+            border: '1px solid rgba(255,214,10,0.12)',
+            borderRadius: 16, padding: 20, marginBottom: 20,
           }}>
             <div style={{ fontSize: 28, marginBottom: 8 }}>🇮🇳</div>
-            <div style={{ fontFamily: 'Orbitron', fontSize: 13, fontWeight: 700, color: 'var(--neon-yellow)', marginBottom: 6 }}>
+            <div style={{ fontFamily: 'Orbitron', fontSize: 13, fontWeight: 700, color: '#FFD60A', marginBottom: 6 }}>
               MADE FOR INDIA
             </div>
             <p style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6 }}>
@@ -150,7 +133,6 @@ export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick })
             </p>
           </div>
 
-          {/* Newsletter */}
           <div style={{ display: 'flex', gap: 8 }}>
             <input
               type="email"
@@ -159,14 +141,13 @@ export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick })
                 flex: 1, background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.08)',
                 borderRadius: 8, padding: '10px 14px',
-                fontFamily: 'Space Grotesk', fontSize: 13, color: 'white',
-                outline: 'none',
+                fontFamily: 'Space Grotesk', fontSize: 13, color: 'white', outline: 'none',
               }}
               data-testid="newsletter-input"
             />
             <button
               style={{
-                background: 'var(--neon-yellow)', color: 'black',
+                background: '#FFD60A', color: 'black',
                 border: 'none', borderRadius: 8, padding: '10px 16px',
                 fontFamily: 'Space Grotesk', fontSize: 13, fontWeight: 700,
                 cursor: 'none', transition: 'box-shadow 0.2s',
@@ -179,14 +160,9 @@ export default function Footer({ onTeacherMode, showTeacherDash, onForgeClick })
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="footer-bottom">
-        <span className="footer-copy">
-          © 2025 HELIOS AI · Every game builds a brighter India 🇮🇳
-        </span>
-        <span className="footer-copy">
-          Built with Emergent AI · Powered by Claude Sonnet
-        </span>
+        <span className="footer-copy">© 2026 HELIOS AI · Every game builds a brighter India 🇮🇳</span>
+        <span className="footer-copy">Built with Emergent AI · Powered by Claude Sonnet</span>
       </div>
     </footer>
   );
